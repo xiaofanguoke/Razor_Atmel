@@ -87,7 +87,7 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+  //LedOn(RED);
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -118,6 +118,8 @@ Promises:
 */
 void UserApp1RunActiveState(void)
 {
+ 
+  
   UserApp1_StateMachine();
 
 } /* end UserApp1RunActiveState */
@@ -136,7 +138,30 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static  u16 u16LedDisCount=0;
+  static  u8  u8LedColor=0;
+  
+  u16LedDisCount++;
+  if(u16LedDisCount>=500){
+     
+     u16LedDisCount=0;
+     LedOff(u8LedColor);
+     if(u8LedColor==LCD_BLUE){
+      
+        u8LedColor=WHITE;
+       
+     }else{
+       
+        u8LedColor++;
+     }
+     
+     LedOn(u8LedColor);
+    
+  }
+  
+      
 
+  
 } /* end UserApp1SM_Idle() */
     
 
