@@ -174,7 +174,70 @@ static void test(void)
          } /* end switch */ 
       } /* end if(u8Counter == 16) */ 
    } /* end if(u16BlinkCount == 500) */
-} /* end UserAppSM_Idle() */
+} /* end demo() */
+
+static void demo2()
+{
+  static u16 u16BlinkCount = 0;
+  static u8 u8Counter = 0;
+  static u8 u8ColorIndex = 0;
+  u16BlinkCount++;
+  if(u16BlinkCount == 500)
+  {
+    u16BlinkCount = 0;
+    /* Update the counter and roll at 16 */
+    u8Counter++;
+    if(u8Counter == 16)
+    {
+      u8Counter = 0;
+      LedOff((LedNumberType)(3 + (4 * u8ColorIndex)));
+      LedOff((LedNumberType)(2 + (4 * u8ColorIndex)));
+      LedOff((LedNumberType)(1 + (4 * u8ColorIndex)));
+      LedOff((LedNumberType)(0 + (4 * u8ColorIndex)));
+      u8ColorIndex++;
+      if(u8ColorIndex == 3)
+      {
+        u8ColorIndex = 0;
+      }
+    } /* end if(u8Counter == 16) */
+    /* Parse the current count to set the LEDs. From leds.h we see the enum
+    for red, green and blue
+    are seperated by 4 so use this with u8ColorIndex to */
+    if(u8Counter & 0x01)
+    {
+      LedOn(3 + (4 * u8ColorIndex));
+    }
+    else
+    {
+      LedOff(3 + (4 * u8ColorIndex));
+    }
+      if(u8Counter & 0x02)
+    {
+      LedOn(2 + (4 * u8ColorIndex));
+    }
+    else
+    {
+      LedOff(2 + (4 * u8ColorIndex));
+    }
+    if(u8Counter & 0x04)
+    {
+      LedOn(1 + (4 * u8ColorIndex));
+    }
+    else
+    {
+      LedOff(1 + (4 * u8ColorIndex));
+    }
+    if(u8Counter & 0x08)
+    {
+      LedOn(0 + (4 * u8ColorIndex));
+    }
+    else
+    {
+      LedOff(0 + (4 * u8ColorIndex));
+    }
+  } /* end if(u16BlinkCount == 500) */
+}
+
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
