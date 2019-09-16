@@ -68,6 +68,113 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
+static void UserAppSM_Idle(void) 
+{ 
+  static u32 u32Counter = 0; 
+  static bool isOn = 0;
+  static u16 ledColor = 0;
+  /* Increment u32Counter every 1ms cycle */ 
+  u32Counter++; 
+  /* Check and roll over */ 
+  if(u32Counter == COUNTER_LIMIT_MS) 
+  { 
+    u32Counter = 0; 
+    
+    if(isOn)
+    {
+      //HEARTBEAT_OFF();
+      
+      LedOff(ledColor);
+      
+      ledColor++;
+      
+      if(ledColor == 8)
+      {
+        ledColor = 0;
+      }
+    }
+    else
+    {
+      HEARTBEAT_ON();
+      
+      LedOn(ledColor);
+    }
+    
+    
+    isOn = ~isOn;
+  } 
+} /* end UserAppSM_Idle() */
+
+static void test(void) 
+{ 
+   static u8 u8ColorIndex = 0; 
+   static u16 u16BlinkCount = 0; 
+   static u8 u8Counter = 0; 
+
+   u16BlinkCount++; 
+   if(u16BlinkCount == 500) 
+   { 
+     u16BlinkCount = 0; 
+     /* Update the counter and roll at 16 */ 
+     u8Counter++; 
+     if(u8Counter == 2) 
+     { 
+         u8Counter = 0; 
+         /* Manage the back light color */ 
+         u8ColorIndex++; 
+         if(u8ColorIndex == 7) 
+         { 
+            u8ColorIndex = 0; 
+         } 
+         /* Set the backlight color: white (all), purple (blue + red), blue, 
+        cyan (blue + green), 
+         green, yellow (green + red), red */ 
+         switch(u8ColorIndex) 
+         { 
+         case 0: /* white */ 
+         LedOn(LCD_RED); 
+         LedOn(LCD_GREEN); 
+         LedOn(LCD_BLUE); 
+         break; 
+         case 1: /* purple */ 
+         LedOn(LCD_RED); 
+         LedOff(LCD_GREEN); 
+         LedOn(LCD_BLUE); 
+         break; 
+         case 2: /* blue */ 
+         LedOff(LCD_RED); 
+         LedOff(LCD_GREEN); 
+         LedOn(LCD_BLUE); 
+         break; 
+         case 3: /* cyan */ 
+         LedOff(LCD_RED); 
+         LedOn(LCD_GREEN); 
+         LedOn(LCD_BLUE); 
+         break; 
+         case 4: /* green */ 
+         LedOff(LCD_RED); 
+         LedOn(LCD_GREEN); 
+         LedOff(LCD_BLUE); 
+         break; 
+         case 5: /* yellow */ 
+         LedOn(LCD_RED); 
+         LedOn(LCD_GREEN); 
+         LedOff(LCD_BLUE); 
+         break; 
+         case 6: /* red */ 
+         LedOn(LCD_RED); 
+         LedOff(LCD_GREEN); 
+         LedOff(LCD_BLUE); 
+         break; 
+         default: /* off */ 
+         LedOff(LCD_RED); 
+         LedOff(LCD_GREEN); 
+         LedOff(LCD_BLUE); 
+         break; 
+         } /* end switch */ 
+      } /* end if(u8Counter == 16) */ 
+   } /* end if(u16BlinkCount == 500) */
+} /* end UserAppSM_Idle() */
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
@@ -88,6 +195,7 @@ Promises:
 void UserApp1Initialize(void)
 {
  
+  
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -120,6 +228,9 @@ void UserApp1RunActiveState(void)
 {
   UserApp1_StateMachine();
 
+  //UserAppSM_Idle();
+  test();
+  //demo();
 } /* end UserApp1RunActiveState */
 
 
