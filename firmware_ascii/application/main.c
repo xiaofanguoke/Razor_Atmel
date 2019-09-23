@@ -79,7 +79,7 @@ void main(void)
   /* Exit initialization */
   SystemStatusReport();
   G_u32SystemFlags &= ~_SYSTEM_INITIALIZING;
-    
+  
   /* Super loop */  
   while(1)
   {
@@ -106,9 +106,12 @@ void main(void)
     UserApp3RunActiveState();
     
     /* System sleep*/
-    HEARTBEAT_OFF();
-    SystemSleep();
-    HEARTBEAT_ON();
+    
+      HEARTBEAT_OFF();
+      SystemSleep();
+      HEARTBEAT_ON();
+    
+    
     
   } /* end while(1) main super loop */
   
