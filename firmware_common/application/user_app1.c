@@ -87,7 +87,7 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -98,7 +98,8 @@ void UserApp1Initialize(void)
     /* The task isn't properly initialized, so shut it down and don't run */
     UserApp1_StateMachine = UserApp1SM_Error;
   }
-
+  
+  LedOn(RED);
 } /* end UserApp1Initialize() */
 
   
@@ -136,7 +137,15 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-
+  static u32 u32Count = 0;
+  
+  u32Count++;
+  if(u32Count == 500)
+  {
+    u32Count = 0;
+    
+    LedToggle(RED);
+  }
 } /* end UserApp1SM_Idle() */
     
 
